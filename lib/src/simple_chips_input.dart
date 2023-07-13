@@ -146,7 +146,7 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                 onTap: () {
                   widget.onChipDeleted?.call(widget.chipsText[i], i);
                   setState(() {
-                    widget.chipsText.remove(widget.chipsText[i]);
+                    widget.chipsText.removeAt(i);
                   });
                 },
                 child: widget.deleteIcon,
