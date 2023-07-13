@@ -37,6 +37,7 @@ class SimpleChipsInput extends StatefulWidget {
     this.onSubmitted,
     this.onSaved,
     this.onChipDeleted,
+    required this.chipsText,
   });
 
   /// Character to seperate the output. For example: ' ' will seperate the output by space.
@@ -101,6 +102,9 @@ class SimpleChipsInput extends StatefulWidget {
   /// Callback when a chip is deleted. Returns the deleted chip content and index.
   final void Function(String, int)? onChipDeleted;
 
+  /// Chip List
+  final List<String> chipsText;
+
   @override
   State<SimpleChipsInput> createState() => _SimpleChipsInputState();
 }
@@ -109,7 +113,6 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
   late final TextEditingController _controller;
   // ignore: prefer_typing_uninitialized_variables
   late final _formKey;
-  final List<String> _chipsText = [];
   late final FocusNode _focusNode;
 
   String _output = '';
@@ -124,7 +127,7 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
 
   List<Widget> _buildChipsSection() {
     final List<Widget> chips = [];
-    for (int i = 0; i < _chipsText.length; i++) {
+    for (int i = 0; i < widget.chipsText.length; i++) {
       chips.add(Container(
         padding: widget.paddingInsideChipContainer,
         margin: widget.marginBetweenChips,
@@ -134,16 +137,16 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
           children: [
             Flexible(
               child: Text(
-                _chipsText[i],
+                widget.chipsText[i],
                 style: widget.chipTextStyle,
               ),
             ),
             if (widget.deleteIcon != null)
               GestureDetector(
                 onTap: () {
-                  widget.onChipDeleted?.call(_chipsText[i], i);
+                  widget.onChipDeleted?.call(widget.chipsText[i], i);
                   setState(() {
-                    _chipsText.removeAt(i);
+                    widget.chipsText.removeAt(i);
                   });
                 },
                 child: widget.deleteIcon,
@@ -172,9 +175,9 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                 focusNode: FocusNode(),
                 onKey: (event) {
                   if (event.data.logicalKey.keyLabel == widget.eraseKeyLabel) {
-                    if (_controller.text.isEmpty && _chipsText.isNotEmpty) {
+                    if (_controller.text.isEmpty && widget.chipsText.isNotEmpty) {
                       setState(() {
-                        _chipsText.removeLast();
+                        widget.chipsText.removeLast();
                       });
                     }
                   }
@@ -202,7 +205,7 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                       );
                       if (_formKey.currentState!.validate()) {
                         setState(() {
-                          _chipsText.add(_controller.text);
+                          widget.chipsText.add(_controller.text);
                           _controller.clear();
                         });
                       }
@@ -222,13 +225,13 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                   },
                   onFieldSubmitted: ((value) {
                     _output = '';
-                    for (String text in _chipsText) {
+                    for (String text in widget.chipsText) {
                       _output += text + widget.separatorCharacter;
                     }
                     if (value.isNotEmpty) {
                       if (_formKey.currentState!.validate()) {
                         setState(() {
-                          _chipsText.add(_controller.text);
+                          widget.chipsText.add(_controller.text);
                           _output +=
                               _controller.text + widget.separatorCharacter;
                           _controller.clear();
@@ -239,13 +242,13 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                   }),
                   onSaved: (value) {
                     _output = '';
-                    for (String text in _chipsText) {
+                    for (String text in widget.chipsText) {
                       _output += text + widget.separatorCharacter;
                     }
                     if (value!.isNotEmpty) {
                       if (_formKey.currentState!.validate()) {
                         setState(() {
-                          _chipsText.add(_controller.text);
+                          widget.chipsText.add(_controller.text);
                           _output +=
                               _controller.text + widget.separatorCharacter;
                           _controller.clear();
