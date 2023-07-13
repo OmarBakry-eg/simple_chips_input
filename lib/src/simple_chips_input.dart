@@ -198,7 +198,7 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                   cursorRadius: widget.textFormFieldStyle.cursorRadius,
                   cursorHeight: widget.textFormFieldStyle.cursorHeight,
                   onChanged: (value) {
-                    if (value.trimLeft() == widget.createCharacter) {
+                    if (value.trim().isEmpty) {
                       return;
                     }
                     if (value.trimLeft().endsWith(widget.createCharacter)) {
