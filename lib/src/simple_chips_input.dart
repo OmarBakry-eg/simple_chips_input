@@ -175,7 +175,8 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                 focusNode: FocusNode(),
                 onKey: (event) {
                   if (event.data.logicalKey.keyLabel == widget.eraseKeyLabel) {
-                    if (_controller.text.isEmpty && widget.chipsText.isNotEmpty) {
+                    if (_controller.text.isEmpty &&
+                        widget.chipsText.isNotEmpty) {
                       setState(() {
                         widget.chipsText.removeLast();
                       });
@@ -197,7 +198,10 @@ class _SimpleChipsInputState extends State<SimpleChipsInput> {
                   cursorRadius: widget.textFormFieldStyle.cursorRadius,
                   cursorHeight: widget.textFormFieldStyle.cursorHeight,
                   onChanged: (value) {
-                    if (value.endsWith(widget.createCharacter)) {
+                    if (value.trimLeft() == widget.createCharacter) {
+                      return;
+                    }
+                    if (value.trimLeft().endsWith(widget.createCharacter)) {
                       _controller.text = _controller.text
                           .substring(0, _controller.text.length - 1);
                       _controller.selection = TextSelection.fromPosition(
