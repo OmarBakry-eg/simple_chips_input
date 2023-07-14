@@ -421,7 +421,6 @@ class _SimpleChipsInputWidgetState extends State<SimpleChipsInputWidget> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SimpleChipsInput(
-            chipsText: const [],
             separatorCharacter: ",",
             focusNode: focusNode,
             validateInput: true,
